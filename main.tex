@@ -1,0 +1,555 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amsthm, amssymb, amsfonts, mathtools, xfrac, mathrsfs}
+\usepackage[margin=0.5in]{geometry}
+
+\newcommand{\opdm}[0]{\boldsymbol{\gamma}}
+\newcommand{\pauli}[1]{\boldsymbol{\sigma}_{#1}}
+\newcommand{\dd}[1]{\mathrm{d}{#1}\,}
+
+\begin{document}
+
+In density functioanl theory (DFT), the exchange-correlation (XC) energy, 
+$E^{xc}$ is expressed as a functional of the single particle reduced density 
+matrix, $\opdm$
+\begin{equation}
+E^{xc}[\opdm] = \int_{\mathbb{R}^3} \dd{r} f( V(r) ), \quad V(r) \equiv V(\opdm(r)),
+\end{equation}
+where $V$ is a set of fundamental density variables associated with
+$\opdm$. The elements of $V$ depend on a number of factors related both
+the spin structure of $\opdm$ and the nature of the approximations assumed
+for $E^{xc}$, e.g. local density (LDA), generalized gradient (GGA) and 
+meta-generalized gradient (MGGA) approximations. 
+The spin structure of $\opdm$ is revealed through its realization as an hermitian rank-2 
+complex tensor field on the spin manifold,
+\begin{equation}
+\opdm(r) = \begin{bmatrix} 
+  \gamma^{\alpha\alpha}(r) & \gamma^{\alpha\beta}(r) \\ 
+  \gamma^{\beta\alpha}(r) & \gamma^{\beta\beta}(r) 
+\end{bmatrix}.
+\end{equation}
+Hermiticity dictates that $\gamma^{\alpha\alpha}, \gamma^{\beta\beta}$ are real valued while
+only restricting that $\gamma^{\alpha\beta} = \bar{\gamma}^{\beta\alpha}$. Therefore, it is
+often advantageous to express $\opdm$ in the basis of Pauli matrices, 
+\begin{equation}
+\opdm(r) = \frac{1}{2}n(r) \mathbf{I}_2 + \frac{1}{2}m_z(r) \pauli{z}
+  + \frac{1}{2}m_y(r) \pauli{y}
+  + \frac{1}{2}m_x(r) \pauli{x}
+\end{equation}
+where the Pauli matrices are defined as 
+\begin{equation}
+\pauli{z} = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix},\quad
+\pauli{y} = \begin{bmatrix} 0 & -i \\ i & 0 \end{bmatrix},\quad
+\pauli{x} = \begin{bmatrix} 0 & 1  \\ 1 & 0 \end{bmatrix},
+\end{equation}
+and the transformed components are given by
+\begin{align}
+n(r)   &= \gamma^{\alpha\alpha} + \gamma^{\beta\beta},    \\ 
+m_z(r) &= \gamma^{\alpha\alpha} - \gamma^{\beta\beta},    \\
+m_y(r) &= i(\gamma^{\alpha\beta} - \gamma^{\beta\alpha}) = -2\Im \gamma^{\alpha\beta}, \\
+m_x(r) &= \gamma^{\alpha\beta} + \gamma^{\beta\alpha}    = 2\Re \gamma^{\alpha\beta}.
+\end{align}
+The functions $n,m_x,m_y,m_z$ are all real valued and together completely 
+describe $\opdm$. By restricting certain elements of this set to be zero,
+we can impose various spin symmetries on our electronic wave function. In
+particular, we consider the following three spin classifications
+\begin{equation}
+\opdm(r) \sim \begin{cases}
+n(r), m_z(r), m_y(r), m_x(r) & \text{(GKS)} \\
+n(r), m_z(r)                 & \text{(UKS)} \\
+n(r)                         & \text{(RKS)}
+\end{cases}
+\end{equation}
+
+
+In the local density approximation (LDA), $V^{LDA}(\opdm)$ is taken to only include
+the non-zero density variables, e.g.
+\begin{align}
+V^{LDA}_{GKS} &= \{ n, m_z, m_y, m_x \} \nonumber \\
+V^{LDA}_{UKS} &= \{ n, m_z \} \\
+V^{LDA}_{RKS} &= \{ n \} \nonumber
+\end{align}
+
+In the generalized-gradient approximation (GGA), $V^{GGA}(\opdm)$ is taken the include
+both the non-zero density variables and their gradients, e.g.
+\begin{align}
+V^{GGA}_{GKS} &= V^{LDA}_{GKS} \cup \{ \nabla n, \nabla m_z, \nabla m_y, \nabla m_x \} \nonumber \\
+V^{GGA}_{UKS} &= V^{LDA}_{UKS} \cup \{ \nabla n, \nabla m_z \} \\
+V^{GGA}_{RKS} &= V^{LDA}_{RKS} \cup \{ \nabla n \} \nonumber
+\end{align}
+
+As scalars such as the energy are invariant with respect to Galilean transformations, the orientation
+dependence of the gradient variables required for e.g. GGA XC functional motivates the introduction 
+of a set of varaiables which are invariant with respect to Galilean reference frame (i.e.
+invariate with respect to spatial rotations, etc). As such, we untroduce a set of auxilary variables,
+$U(\opdm)$ which take the following simple form for RKS
+\begin{align}
+U^{LDA}_{RKS}     &= V^{LDA}_{RKS} \\
+U^{GGA}_{RKS}     &= U^{LDA}_{RKS} \cup \{ \eta \}
+\end{align}
+with $\eta = \| \nabla n \|^2$.
+The expressions for the auxilarary variables for UKS/GKS take on a slightly more complicated form.
+\begin{align}
+U^{LDA}_{UKS/GKS} &= \{\rho_+, \rho_-\} \\
+U^{GGA}_{UKS/GKS} &= U^{LDA}_{UKS/GKS} \cup \{ \eta_{++}, \eta_{+-}, \eta_{--}\}
+\end{align}
+Due to the fact that spin and spatial degrees of freedom are decoupled in UKS, these variables
+take the following simple form
+\begin{align}
+&\rho_+^{UKS}    = \gamma^{\alpha\alpha}, \quad
+\rho_-^{UKS}    = \gamma^{\beta\beta},   \\
+&\eta_{++}^{UKS} = \|\nabla \gamma^{\alpha\alpha} \|^2, \quad
+\eta_{+-}^{UKS} = \nabla \gamma^{\alpha\alpha} \cdot \nabla \gamma^{\beta\beta} , \quad
+\eta_{--}^{UKS} = \|\nabla \gamma^{\beta\beta} \|^2. 
+\end{align}
+The coupling of spin and spatial degrees of freedom neccesitate the introduction of a more
+complidated set of auxillary variables
+\begin{align}
+\rho_\pm^{GKS}      &= \frac{1}{2}n \pm \frac{1}{2}\sqrt{m_x^2 + m_y^2 + m_z^2}, \\
+\eta_{\pm\pm}^{GKS} &= \frac{1}{2}\|\nabla n\|^2 + \frac{1}{2}\left( \sum_{i=x,y,z} \| \nabla m_i \|^2 \right) \pm 
+                       \frac{\zeta_\nabla}{2} \sqrt{\sum_{i=x,y,z} \nabla n \cdot \nabla m_i}, \\
+\eta_{+-}^{GKS}     &= \frac{1}{2}\|\nabla n\|^2 - \frac{1}{2}\left( \sum_{i=x,y,z} \| \nabla m_i \|^2 \right)  \\
+\zeta_{\nabla}      &= \mathrm{sgn}\left( \sum_{i=x,y,z} (\nabla n \cdot \nabla m_i) m_i \right)
+\end{align}
+
+The introduction of the auxilarary variables neccesssitates the development of a kernel $g$ defined as
+$g(U) = f(V)$, such that
+\begin{equation}
+E^{xc}[\opdm] = \int_{\mathbb{R}^3} \dd{r} g( U(r) ), \quad U(r) \equiv U(V(\opdm(r))),
+\end{equation}
+
+\section{Basis Set Expansions}
+
+It is typically the case that on expands $\opdm$ in some basis $\{\chi_\mu(r)\}_{\mu = 1}^{N_b}$. This is typically achieved 
+through the introduction of a density matrix, $\mathbf{D} \in \mathbb{C}^{2N_b\times 2N_b}$ which adopts an identical
+spin structure to $\opdm$,
+\begin{equation}
+\mathbf{D} = \begin{bmatrix} 
+  \mathbf{D}^{\alpha\alpha} & \mathbf{D}^{\alpha\beta} \\ 
+  \mathbf{D}^{\beta\alpha} & \mathbf{D}^{\beta\beta} 
+\end{bmatrix}, \quad
+\mathbf{D}^{\sigma\sigma'} \in \mathbb{C}^{N_b\times N_b},\,\, \sigma,\sigma'\in\{\alpha,\beta\},
+\end{equation}
+such that
+\begin{equation}
+\gamma^{\sigma\sigma'}(r) = \sum_{\mu\nu} D_{\mu\nu}^{\sigma\sigma'} \chi_\mu(r) \chi_\nu(r).
+\end{equation}
+In particular, it is also possible to define analogous Pauli basis components for the density matrix
+such that
+\begin{equation}
+\mathbf{D} = \frac{1}{2}\mathbf{N} \otimes \mathbf{I}_2 + 
+\frac{1}{2}\mathbf{M}_z \otimes \pauli{z} + 
+\frac{1}{2}\mathbf{M}_y \otimes \pauli{y} + 
+\frac{1}{2}\mathbf{M}_x \otimes \pauli{x}, 
+\end{equation}
+where
+\begin{align}
+\mathbf{N}   &= \mathbf{D}^{\alpha\alpha} + \mathbf{D}^{\beta\beta},    \\ 
+\mathbf{M}_z &= \mathbf{D}^{\alpha\alpha} - \mathbf{D}^{\beta\beta},    \\
+\mathbf{M}_y &= -2\Im \mathbf{D}^{\alpha\beta}, \\
+\mathbf{M}_x &= 2\Re \mathbf{D}^{\alpha\beta}.
+\end{align}
+such that
+\begin{align}
+n(r)   &= \sum_{\mu\nu} N_{\mu\nu} \chi_\mu(r) \chi_\nu(r), \\
+m_i(r) &= \sum_{\mu\nu} (\mathbf{M}_i)_{\mu\nu} \chi_\mu(r) \chi_\nu(r), \quad i \in \{x,y,z\}. 
+\end{align}
+
+\section{Numerical Integration}
+
+The nonlinear character of the integration kernel $f$ necessitates the evaluation of the XC energy (and associated
+quantities such as its derivatives) via numerical integration. For molecular integrations, i.e. those with non-trivial
+character in the vacinity of atomic nuclei, numerical integrations may be carried out via composite quadrature rule
+\begin{equation}
+E^{xc} \approx \sum_A \sum_{j \in \mathcal{Q}^A} w^A_j g(U(\opdm(r^A_j)))
+\end{equation}
+where $\mathcal{Q}^A$ is a spherical product quadrature centered at atomic center $A$. To avoid double-counting, the
+quadrature weights of $\mathcal{Q}^A$ are modified by a partition function
+\begin{equation}
+w^A_j = p_A(r^A_j) w_j, \quad j \in \mathcal{Q}^A,
+\end{equation}
+where $w_j$ is an unmodified quadrature weight associated with the base quadrature of $\mathcal{Q}^A$. The partition function
+$p_A$ generally depends on the entire molecular geometry, though domain decomposition in often possible.
+
+
+\section{Gradients}
+
+This change of variables $V\mapsto U$ necessacarily complicates the derivation of functional gradients
+through the chain-rule.  Given an arbitrary perturbation $X$, we may express the XC gradient as
+\begin{align}
+\frac{\partial E^{xc}}{\partial X} &=
+\sum_{IJ} \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g(U)}{\partial U_I} \frac{\partial U_I}{\partial V_J} \frac{\partial V_J}{\partial X}, \\
+&\approx \sum_A \sum_{j\in\mathcal{Q}^A} \sum_{IJ} \frac{\partial w_j^A}{\partial X} g(U(r_j^A)) + w_j^A\frac{\partial g(U(r_j^A))}{\partial U_I} \frac{\partial U_I(r_j^A)}{\partial V_J} \frac{\partial V_J(r^A_j)}{\partial X}
+\end{align}
+The sums over $I$ and $J$ run over the auxillary ($U$) and density ($V$) variables,
+respectively. This decomposition breaks down the evaluation of the gradient into three contributions
+\begin{enumerate}
+  \item Derivatives of the XC kernel with respect to the auxillary variables ($\frac{\partial g}{\partial U_I}$). These are independent of perturbation and spin
+        classification, and are typically handled by external libraries (Libxc, ExchCXX, etc) for point-wise evaluations. As such, we do not consider them here.
+  \item The Jacobian for the variable transformation $V\mapsto U$ ($\mathcal{J}_{IJ} = \frac{\partial U_I}{\partial V_J}$). These are also independent of the
+        perturbation but depend on the spin class being treated (RKS,UKS,GKS).
+  \item Two perturbation dependent pieces ($\frac{\partial w_j}{\partial X}$, $\frac{\partial V_J}{\partial X}$) which depend both on the perturbation and
+        spin classification. 
+\end{enumerate}
+
+\subsection{Auxillary Variable Jacobian}
+
+\subsubsection{RKS}
+LDA - trivial.
+
+GGA:
+\begin{align}
+  &\frac{\partial \eta}{\partial (\nabla_i n)} = \frac{\partial}{\partial (\nabla_i n)} \nabla n \cdot \nabla n = 2 \nabla_i n
+\end{align}
+
+\subsubsection{UKS}
+LDA:
+\begin{align}
+  &\frac{\partial \rho_\pm^{UKS}}{\partial n}   = \frac{1}{2} \frac{\partial}{\partial n} (n \pm m_z) = \frac{1}{2} \\ 
+  &\frac{\partial \rho_\pm^{UKS}}{\partial m_z} = \frac{1}{2} \frac{\partial}{\partial m_z} (n \pm m_z) = \pm\frac{1}{2}  
+\end{align}
+
+GGA:
+\begin{align}
+  \frac{\partial \eta_{\pm\pm}}{\partial \nabla_i n} &= 
+    \frac{1}{4} \frac{\partial}{\partial \nabla_i n}\left((\nabla n \pm \nabla m_z)\cdot(\nabla n \pm \nabla m_z)\right) \nonumber \\
+  &= \frac{1}{4} \frac{\partial}{\partial \nabla_i n}\left(\nabla n\cdot \nabla n \pm 2 \nabla n\cdot \nabla m_z + \nabla m_z\cdot \nabla m_z\right) \nonumber \\
+  &= \frac{1}{2}(\nabla_i n \pm \nabla_i m_z)\\
+  \nonumber \\
+  \frac{\partial \eta_{\pm\pm}}{\partial \nabla_i m_z} &= 
+    \frac{1}{4} \frac{\partial}{\partial \nabla_i m_z}\left((\nabla n \pm \nabla m_z)\cdot(\nabla n \pm \nabla m_z)\right) \nonumber \\
+  &= \frac{1}{4} \frac{\partial}{\partial \nabla_i m_z}\left(\nabla n\cdot \nabla n \pm 2 \nabla n\cdot \nabla m_z + \nabla m_z\cdot \nabla m_z\right) \nonumber \\
+  &= \frac{1}{2}(\nabla_i m_z \pm \nabla_i n)\\
+  \nonumber \\
+  \frac{\partial \eta_{+-}}{\partial \nabla_i n} &= 
+    \frac{1}{4} \frac{\partial}{\partial \nabla_i n}\left((\nabla n + \nabla m_z)\cdot(\nabla n - \nabla m_z)\right) \nonumber \\
+  &= \frac{1}{4} \frac{\partial}{\partial \nabla_i n}\left(\nabla n\cdot \nabla n - \nabla m_z\cdot \nabla m_z\right) \nonumber \\
+  &= \frac{1}{2} \nabla_i n \\
+  \nonumber \\
+  \frac{\partial \eta_{+-}}{\partial \nabla_i m_z} &= 
+    \frac{1}{4} \frac{\partial}{\partial \nabla_i m_z}\left((\nabla n + \nabla m_z)\cdot(\nabla n - \nabla m_z)\right) \nonumber \\
+  &= \frac{1}{4} \frac{\partial}{\partial \nabla_i m_z}\left(\nabla n\cdot \nabla n - \nabla m_z\cdot \nabla m_z\right) \nonumber \\
+  &= -\frac{1}{2} \nabla_i m_z
+\end{align}
+
+\subsubsection{GKS}
+TODO
+
+
+
+\subsection{Exchange-Correlation Potentials}
+
+Expressions for XC potentials may be derived as the gradient of the XC energy with respect to density matrix elements. Here we derive the primary 
+perturbation dependent components and the final expressions
+
+\subsubsection{RKS XC Potential}
+
+Perturbation derivatives:
+\begin{align}
+&\frac{\partial n}{\partial N_{\lambda\kappa}} = \frac{\partial}{\partial N_{\lambda\kappa}} \sum_{\mu\nu} N_{\mu\nu} \chi_\mu \chi_\nu
+  = \chi_\lambda \chi_\kappa \\ 
+&\frac{\partial \nabla n}{\partial N_{\lambda\kappa}} = \frac{\partial}{\partial N_{\lambda\kappa}} \sum_{\mu\nu} N_{\mu\nu} \nabla(\chi_\mu \chi_\nu)
+  = \nabla(\chi_\lambda \chi_\kappa) 
+\end{align}
+
+LDA:
+\begin{align}
+&\frac{\partial E^{xc}}{\partial N_{\mu\nu}} = \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g(\mathbf{r})}{\partial n} \frac{\partial n}{\partial N_{\mu\nu}}
+ = \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g(\mathbf{r})}{\partial n} \chi_\mu(\mathbf{r}) \chi_\nu(\mathbf{r}) \\
+&\frac{\partial E^{xc}}{\partial D^{\alpha\alpha}_{\mu\nu}} 
+  = \frac{\partial E^{xc}}{\partial N_{\mu\nu}} \frac{\partial N_{\mu\nu}}{\partial D^{\alpha\alpha}_{\mu\nu}}
+  = \frac{\partial E^{xc}}{\partial N_{\mu\nu}} 
+\end{align}
+
+GGA:
+\begin{align}
+\frac{\partial E^{xc}}{\partial N_{\mu\nu}} &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+  \frac{\partial g(\mathbf{r})}{\partial n}   \frac{\partial n}   {\partial N_{\mu\nu}} +
+  \frac{\partial g(\mathbf{r})}{\partial \eta}\frac{\partial \eta}{\partial \nabla n} \cdot\frac{\partial \nabla n}{\partial N_{\mu\nu}} \nonumber \\ 
+&= \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g(\mathbf{r})}{\partial n} \chi_\mu(\mathbf{r}) \chi_\nu(\mathbf{r}) +
+   \frac{\partial g(\mathbf{r})}{\partial \eta} (2\nabla n) \cdot \nabla( \chi_\mu(\mathbf{r}) \chi_\nu(\mathbf{r}) ) \nonumber \\
+&= \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g(\mathbf{r})}{\partial n} \chi_\mu(\mathbf{r}) \chi_\nu(\mathbf{r}) +
+   2\frac{\partial g(\mathbf{r})}{\partial \eta} \nabla n \cdot \nabla( \chi_\mu(\mathbf{r}) \chi_\nu(\mathbf{r}) )\\ 
+\frac{\partial E^{xc}}{\partial D^{\alpha\alpha}_{\mu\nu}} 
+  &= \frac{\partial E^{xc}}{\partial N_{\mu\nu}} \frac{\partial N_{\mu\nu}}{\partial D^{\alpha\alpha}_{\mu\nu}}
+  = \frac{\partial E^{xc}}{\partial N_{\mu\nu}} 
+\end{align}
+
+
+\subsubsection{UKS XC Potential}
+Perturbation derivatives:
+\begin{align}
+&\frac{\partial n}{\partial M^z_{\mu\nu}} = \frac{\partial \nabla n}{\partial M^z_{\mu\nu}} 
+ = \frac{\partial m_z}{\partial N_{\mu\nu}} = \frac{\partial \nabla m_z}{\partial N_{\mu\nu}} = 0 \\
+&\frac{\partial m_z}{\partial M^z_{\lambda\kappa}} = \frac{\partial}{\partial M^z_{\lambda\kappa}} \sum_{\mu\nu} M^z_{\mu\nu} \chi_\mu \chi_\nu
+  = \chi_\lambda \chi_\kappa \\ 
+&\frac{\partial \nabla m_z}{\partial M^z_{\lambda\kappa}} = \frac{\partial}{\partial M^z_{\lambda\kappa}} \sum_{\mu\nu} M^z_{\mu\nu} \nabla(\chi_\mu \chi_\nu)
+  = \nabla(\chi_\lambda \chi_\kappa) 
+\end{align}
+
+LDA:
+\begin{align}
+\frac{\partial E^{xc}}{\partial N_{\mu\nu}} &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+  \frac{\partial n}{\partial N_{\mu\nu}}\left( \frac{\partial g}{\partial \rho_+}\frac{\partial\rho_+}{\partial n} +
+    \frac{\partial g}{\partial \rho_-}\frac{\partial\rho_-}{\partial n} \right) \nonumber \\
+  &= \frac{1}{2}\int_{\mathbb{R}^3} \dd{\mathbf{r}} \left(\frac{\partial g}{\partial \rho_+} + \frac{\partial g}{\partial \rho_-} \right) \chi_\mu \chi_\nu \\
+\frac{\partial E^{xc}}{\partial M^z_{\mu\nu}} &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+  \frac{\partial m_z}{\partial M^z_{\mu\nu}}\left( \frac{\partial g}{\partial \rho_+}\frac{\partial\rho_+}{\partial m_z} +
+    \frac{\partial g}{\partial \rho_-}\frac{\partial\rho_-}{\partial m_z} \right) \nonumber \\
+  &= \frac{1}{2}\int_{\mathbb{R}^3} \dd{\mathbf{r}} \left(\frac{\partial g}{\partial \rho_+} - \frac{\partial g}{\partial \rho_-} \right) \chi_\mu \chi_\nu \\
+\frac{\partial E^{xc}}{\partial D^{\alpha\alpha}_{\mu\nu}} &= 
+  \frac{\partial E^{xc}}{\partial N_{\mu\nu}} \frac{\partial N_{\mu\nu}}{\partial D^{\alpha\alpha}_{\mu\nu}} +
+  \frac{\partial E^{xc}}{\partial M^z_{\mu\nu}} \frac{\partial M^z_{\mu\nu}}{\partial D^{\alpha\alpha}_{\mu\nu}} = 
+  \frac{\partial E^{xc}}{\partial N_{\mu\nu}} + \frac{\partial E^{xc}}{\partial M^z_{\mu\nu}}  \nonumber \\
+  &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g}{\partial \rho_+} \chi_\mu \chi_\nu \\
+\frac{\partial E^{xc}}{\partial D^{\beta\beta}_{\mu\nu}} &= 
+  \frac{\partial E^{xc}}{\partial N_{\mu\nu}} \frac{\partial N_{\mu\nu}}{\partial D^{\beta\beta}_{\mu\nu}} +
+  \frac{\partial E^{xc}}{\partial M^z_{\mu\nu}} \frac{\partial M^z_{\mu\nu}}{\partial D^{\beta\beta}_{\mu\nu}} = 
+  \frac{\partial E^{xc}}{\partial N_{\mu\nu}} - \frac{\partial E^{xc}}{\partial M^z_{\mu\nu}}  \nonumber \\
+  &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g}{\partial \rho_-} \chi_\mu \chi_\nu 
+\end{align}
+
+GGA:
+\begin{align}
+\frac{\partial E^{xc}}{\partial N_{\mu\nu}} &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+  \frac{\partial n}{\partial N_{\mu\nu}}\left( 
+      \frac{\partial g}{\partial \rho_+}\frac{\partial\rho_+}{\partial n} +
+      \frac{\partial g}{\partial \rho_-}\frac{\partial\rho_-}{\partial n} 
+    \right) +
+  \frac{\partial \nabla n}{\partial N_{\mu\nu}}\cdot\left(
+      \frac{\partial g}{\partial \eta_{++}}\frac{\partial\eta_{++}}{\partial \nabla n} +
+      \frac{\partial g}{\partial \eta_{+-}}\frac{\partial\eta_{+-}}{\partial \nabla n} +
+      \frac{\partial g}{\partial \eta_{--}}\frac{\partial\eta_{--}}{\partial \nabla n} 
+    \right)\nonumber \\
+  &= \frac{1}{2}\int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+    \left(\frac{\partial g}{\partial \rho_+} + \frac{\partial g}{\partial \rho_-} \right) \chi_\mu \chi_\nu +
+    \left(
+      \frac{\partial g}{\partial \eta_{++}}(\nabla n + \nabla m_z) +
+      \frac{\partial g}{\partial \eta_{+-}}\nabla n +
+      \frac{\partial g}{\partial \eta_{--}}(\nabla n - \nabla m_z) 
+    \right) \cdot \nabla(\chi_\mu \chi_\nu ) \nonumber \\
+  &= \frac{1}{2}\int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+    \left(\frac{\partial g}{\partial \rho_+} + \frac{\partial g}{\partial \rho_-} \right) \chi_\mu \chi_\nu +
+    \left(
+      \left[ \frac{\partial g}{\partial \eta_{++}} + \frac{\partial g}{\partial \eta_{+-}} + \frac{\partial g}{\partial \eta_{--}} \right] \nabla n +
+      \left[ \frac{\partial g}{\partial \eta_{++}} - \frac{\partial g}{\partial \eta_{--}} \right] \nabla m_z
+    \right) \cdot \nabla(\chi_\mu \chi_\nu ) \\
+    \nonumber\\
+    \nonumber\\
+\frac{\partial E^{xc}}{\partial M^z_{\mu\nu}} &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+  \frac{\partial m_z}{\partial M^z_{\mu\nu}}\left( 
+      \frac{\partial g}{\partial \rho_+}\frac{\partial\rho_+}{\partial m_z} +
+      \frac{\partial g}{\partial \rho_-}\frac{\partial\rho_-}{\partial m_z} 
+    \right) +
+  \frac{\partial \nabla n}{\partial M^z_{\mu\nu}}\cdot\left(
+      \frac{\partial g}{\partial \eta_{++}}\frac{\partial\eta_{++}}{\partial \nabla m_z} +
+      \frac{\partial g}{\partial \eta_{+-}}\frac{\partial\eta_{+-}}{\partial \nabla m_z} +
+      \frac{\partial g}{\partial \eta_{--}}\frac{\partial\eta_{--}}{\partial \nabla m_z} 
+    \right)\nonumber \\
+  &= \frac{1}{2}\int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+    \left(\frac{\partial g}{\partial \rho_+} - \frac{\partial g}{\partial \rho_-} \right) \chi_\mu \chi_\nu +
+    \left(
+      \frac{\partial g}{\partial \eta_{++}}(\nabla n + \nabla m_z) -
+      \frac{\partial g}{\partial \eta_{+-}}\nabla m_z -
+      \frac{\partial g}{\partial \eta_{--}}(\nabla n - \nabla m_z) 
+    \right) \cdot \nabla(\chi_\mu \chi_\nu ) \nonumber \\
+  &= \frac{1}{2}\int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+    \left(\frac{\partial g}{\partial \rho_+} - \frac{\partial g}{\partial \rho_-} \right) \chi_\mu \chi_\nu +
+    \left(
+      \left[ \frac{\partial g}{\partial \eta_{++}} - \frac{\partial g}{\partial \eta_{--}} \right] \nabla n +
+      \left[ \frac{\partial g}{\partial \eta_{++}} - \frac{\partial g}{\partial \eta_{+-}} + \frac{\partial g}{\partial \eta_{--}} \right] \nabla m_z
+    \right) \cdot \nabla(\chi_\mu \chi_\nu ) \\
+    \nonumber\\
+    \nonumber\\
+\frac{\partial E^{xc}}{\partial D^{\alpha\alpha}_{\mu\nu}} &= 
+  \frac{\partial E^{xc}}{\partial N_{\mu\nu}} \frac{\partial N_{\mu\nu}}{\partial D^{\alpha\alpha}_{\mu\nu}} +
+  \frac{\partial E^{xc}}{\partial M^z_{\mu\nu}} \frac{\partial M^z_{\mu\nu}}{\partial D^{\alpha\alpha}_{\mu\nu}} = 
+  \frac{\partial E^{xc}}{\partial N_{\mu\nu}} + \frac{\partial E^{xc}}{\partial M^z_{\mu\nu}}  \nonumber \\
+  &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g}{\partial \rho_+} \chi_\mu \chi_\nu +
+    \left( 
+      \frac{\partial g}{\partial \eta_{++}} (\nabla n + \nabla m_z) + 
+      \frac{1}{2}\frac{\partial g}{\partial \eta_{+-}} (\nabla n - \nabla m_z)
+    \right) \cdot \nabla(\chi_\mu \chi_\nu ) \\
+  &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g}{\partial \rho_+} \chi_\mu \chi_\nu +
+    \left( 
+      2\frac{\partial g}{\partial \eta_{++}} \nabla \rho_+ + 
+      \frac{\partial g}{\partial \eta_{+-}} \nabla \rho_- 
+    \right) \cdot \nabla(\chi_\mu \chi_\nu ) \\
+    \nonumber\\
+    \nonumber\\
+\frac{\partial E^{xc}}{\partial D^{\beta\beta}_{\mu\nu}} &= 
+  \frac{\partial E^{xc}}{\partial N_{\mu\nu}} \frac{\partial N_{\mu\nu}}{\partial D^{\beta\beta}_{\mu\nu}} +
+  \frac{\partial E^{xc}}{\partial M^z_{\mu\nu}} \frac{\partial M^z_{\mu\nu}}{\partial D^{\beta\beta}_{\mu\nu}} = 
+  \frac{\partial E^{xc}}{\partial N_{\mu\nu}} - \frac{\partial E^{xc}}{\partial M^z_{\mu\nu}}  \nonumber \\
+  &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g}{\partial \rho_-} \chi_\mu \chi_\nu +
+    \left( 
+      \frac{\partial g}{\partial \eta_{--}} (\nabla n - \nabla m_z) + 
+      \frac{1}{2}\frac{\partial g}{\partial \eta_{+-}} (\nabla n + \nabla m_z)
+    \right) \cdot \nabla(\chi_\mu \chi_\nu ) \\
+  &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g}{\partial \rho_-} \chi_\mu \chi_\nu +
+    \left( 
+      2\frac{\partial g}{\partial \eta_{--}} \nabla \rho_- + 
+      \frac{\partial g}{\partial \eta_{+-}} \nabla \rho_+ 
+    \right) \cdot \nabla(\chi_\mu \chi_\nu ) 
+\end{align}
+
+
+
+
+\newpage
+
+\subsection{Nuclear Gradients}
+
+\subsubsection{RKS}
+Let
+\begin{align}
+&Z^{N}_{\mu}  = \sum_\nu N_{\mu\nu} \chi_\nu \\
+&Z^{Nj}_{\mu} = \sum_\nu N_{\mu\nu} (\nabla_j \chi_\nu) 
+\end{align}
+Perturbation derivatives:
+\begin{align}
+\frac{\partial n}{\partial R_{A_i}} &= \sum_{\mu\nu} N_{\mu\nu} \frac{\partial}{\partial R_{A_i}} (\chi_\mu \chi_\nu) = 
+  2\sum_{\mu\nu} N_{\mu\nu} \frac{\partial \chi_\mu}{\partial R_{A_i}} \chi_\nu = 
+  -2\sum_{\mu\in A} \sum_\nu N_{\mu\nu} (\nabla_i \chi_\mu) \chi_\nu \nonumber \\ &= 
+  -2\sum_{\mu\in A} (\nabla_i \chi_\mu) Z^N_\mu \\
+\nonumber \\
+\frac{\partial \nabla_j n}{\partial R_{A_i}} &= 
+  \sum_{\mu\nu} N_{\mu\nu} \frac{\partial}{\partial R_{A_i}} \nabla_j (\chi_\mu \chi_\nu) = 
+  \sum_{\mu\nu} N_{\mu\nu} \nabla_j \frac{\partial}{\partial R_{A_i}} (\chi_\mu \chi_\nu) = 
+  2\sum_{\mu\nu} N_{\mu\nu} \nabla_j \left(\frac{\partial \chi_\mu}{\partial R_{A_i}} \chi_\nu \right) \nonumber \\
+  &= -2\sum_{\mu\in A} \sum_\nu N_{\mu\nu} \nabla_j \left((\nabla_i\chi_\mu) \chi_\nu \right) \nonumber \\
+  &= -2\sum_{\mu\in A} \sum_\nu N_{\mu\nu} \left( (\nabla^{(2)}_{ij}\chi_\mu)\chi_\nu + (\nabla_i \chi_\mu)(\nabla_j \chi_\nu)\right) \nonumber \\
+  &= -2\sum_{\mu\in A} \left( (\nabla^{(2)}_{ij}\chi_\mu) Z^{N}_\mu + (\nabla_i \chi_\mu)Z^{Nj}_\mu\right) 
+\end{align}
+
+LDA:
+\begin{align}
+\frac{\partial E^{xc}}{\partial R_{A_i}} = \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g(\mathbf{r})}{\partial n} \frac{\partial n}{\partial R_{A_i}}
+ = -2\sum_{\mu\in A}
+    \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g(\mathbf{r})}{\partial n} (\nabla_i \chi_\mu) Z^N_\mu
+\end{align}
+
+GGA:
+\begin{align}
+\frac{\partial E^{xc}}{\partial R_{A_i}} &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+  \frac{\partial g(\mathbf{r})}{\partial n}   \frac{\partial n}   {\partial R_{A_i}} +
+  \frac{\partial g(\mathbf{r})}{\partial \eta}\frac{\partial \eta}{\partial \nabla n} \cdot\frac{\partial \nabla n}{\partial R_{A_i}} \nonumber \\ 
+&= -2\sum_{\mu\in A} 
+   \int_{\mathbb{R}^3} \dd{\mathbf{r}} \frac{\partial g(\mathbf{r})}{\partial n} (\nabla_i \chi_\mu) Z^N_\mu +
+   2\frac{\partial g(\mathbf{r})}{\partial \eta} \sum_j\nabla_j n \left( (\nabla^{(2)}_{ij}\chi_\mu) Z^N_\mu + (\nabla_i \chi_\mu) Z^{Nj}_\mu \right)
+\end{align}
+
+
+\subsubsection{UKS}
+Perturbation derivatives:
+\begin{align}
+\frac{\partial m_z}{\partial R_{A_i}} &= -2\sum_{\mu\in A} \sum_\nu M^z_{\mu\nu} (\nabla_i \chi_\mu) \chi_\nu \\
+\frac{\partial \nabla_j m_z}{\partial R_{A_i}} &= 
+  -2\sum_{\mu\in A} \sum_\nu M^z_{\mu\nu} \left( (\nabla^{(2)}_{ij}\chi_\mu)\chi_\nu + (\nabla_i \chi_\mu)(\nabla_j \chi_\nu)\right) 
+\end{align}
+
+LDA:
+\begin{align}
+\frac{\partial E^{xc}}{\partial R_{A_i}} &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+  \frac{\partial n}{\partial R_{A_i}}\left( \frac{\partial g}{\partial \rho_+}\frac{\partial\rho_+}{\partial n} +
+    \frac{\partial g}{\partial \rho_-}\frac{\partial\rho_-}{\partial n} \right) +
+  \frac{\partial m_z}{\partial R_{A_i}}\left( \frac{\partial g}{\partial \rho_+}\frac{\partial\rho_+}{\partial m_z} +
+    \frac{\partial g}{\partial \rho_-}\frac{\partial\rho_-}{\partial m_z} \right) 
+  \nonumber \\
+&= \frac{1}{2}\int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+  \frac{\partial n}  {\partial R_{A_i}}\left( \frac{\partial g}{\partial \rho_+} + \frac{\partial g}{\partial \rho_-} \right) +
+  \frac{\partial m_z}{\partial R_{A_i}}\left( \frac{\partial g}{\partial \rho_+} - \frac{\partial g}{\partial \rho_-} \right) 
+  \nonumber \\
+&= - \sum_{\mu\in A} \sum_\nu \int_{\mathbb{R}^3} \dd{\mathbf{r}}\left[ 
+  N_{\mu\nu}  \left( \frac{\partial g}{\partial \rho_+} + \frac{\partial g}{\partial \rho_-} \right) +
+  M^z_{\mu\nu}\left( \frac{\partial g}{\partial \rho_+} - \frac{\partial g}{\partial \rho_-} \right) 
+  \right] (\nabla_i \chi_\mu) \chi_\nu \\
+&= - 2\sum_{\mu\in A} \sum_\nu \int_{\mathbb{R}^3} \dd{\mathbf{r}}\left[ 
+  D^{\alpha\alpha}_{\mu\nu} \frac{\partial g}{\partial \rho_+} +
+  D^{\beta\beta}_{\mu\nu}   \frac{\partial g}{\partial \rho_-} 
+  \right] (\nabla_i \chi_\mu) \chi_\nu
+\end{align}
+
+GGA:
+\begin{align}
+\frac{\partial E^{xc}}{\partial R_{A_i}} &= \int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+  \frac{\partial n}{\partial R_{A_i}}\left( \frac{\partial g}{\partial \rho_+}\frac{\partial\rho_+}{\partial n} +
+    \frac{\partial g}{\partial \rho_-}\frac{\partial\rho_-}{\partial n} \right) +
+  \frac{\partial m_z}{\partial R_{A_i}}\left( \frac{\partial g}{\partial \rho_+}\frac{\partial\rho_+}{\partial m_z} +
+    \frac{\partial g}{\partial \rho_-}\frac{\partial\rho_-}{\partial m_z} \right) + 
+  \nonumber \\ &\qquad\quad
+  \frac{\partial \nabla n}{\partial R_{A_i}} \cdot \left( 
+    \frac{\partial g}{\partial \eta_{++}}\frac{\partial\rho_+}{\partial \nabla n} +
+    \frac{\partial g}{\partial \eta_{+-}}\frac{\partial\rho_-}{\partial \nabla n} +
+    \frac{\partial g}{\partial \eta_{--}}\frac{\partial\rho_+}{\partial \nabla n} 
+  \right) +
+  \nonumber \\ &\qquad\quad
+  \frac{\partial \nabla m_z}{\partial R_{A_i}} \cdot \left( 
+    \frac{\partial g}{\partial \eta_{++}}\frac{\partial\rho_+}{\partial \nabla m_z} +
+    \frac{\partial g}{\partial \eta_{+-}}\frac{\partial\rho_-}{\partial \nabla m_z} +
+    \frac{\partial g}{\partial \eta_{--}}\frac{\partial\rho_+}{\partial \nabla m_z} 
+  \right) 
+  \nonumber \\
+&= \frac{1}{2}\int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+  \frac{\partial n}  {\partial R_{A_i}}\left( \frac{\partial g}{\partial \rho_+} + \frac{\partial g}{\partial \rho_-} \right) +
+  \frac{\partial m_z}{\partial R_{A_i}}\left( \frac{\partial g}{\partial \rho_+} - \frac{\partial g}{\partial \rho_-} \right) +
+  \nonumber \\ &\qquad\quad
+  \frac{\partial \nabla n}{\partial R_{A_i}} \cdot \left( 
+      \left[ \frac{\partial g}{\partial \eta_{++}} + \frac{\partial g}{\partial \eta_{+-}} + \frac{\partial g}{\partial \eta_{--}} \right] \nabla n +
+      \left[ \frac{\partial g}{\partial \eta_{++}} - \frac{\partial g}{\partial \eta_{--}} \right] \nabla m_z
+  \right) +
+  \nonumber \\ &\qquad\quad
+  \frac{\partial \nabla m_z}{\partial R_{A_i}} \cdot \left( 
+      \left[ \frac{\partial g}{\partial \eta_{++}} - \frac{\partial g}{\partial \eta_{--}} \right] \nabla n +
+      \left[ \frac{\partial g}{\partial \eta_{++}} - \frac{\partial g}{\partial \eta_{+-}} + \frac{\partial g}{\partial \eta_{--}} \right] \nabla m_z
+  \right) \nonumber\\ 
+&= -\sum_{\mu\in A} \sum_\nu \int_{\mathbb{R}^3} \dd{\mathbf{r}} 
+  \left[
+  N_{\mu\nu} \left( \frac{\partial g}{\partial \rho_+} + \frac{\partial g}{\partial \rho_-} \right) +
+  M^z_{\mu\nu}\left( \frac{\partial g}{\partial \rho_+} - \frac{\partial g}{\partial \rho_-} \right) 
+  \right] (\nabla_i \chi_\mu) \chi_\nu +
+  \nonumber \\ &\qquad\quad
+  \sum_j \left\lbrace
+    N_{\mu\nu}
+    \left( 
+      \left[ \frac{\partial g}{\partial \eta_{++}} + \frac{\partial g}{\partial \eta_{+-}} + \frac{\partial g}{\partial \eta_{--}} \right] \nabla_j n +
+      \left[ \frac{\partial g}{\partial \eta_{++}} - \frac{\partial g}{\partial \eta_{--}} \right] \nabla_j m_z
+    \right) \right. +
+  \nonumber \\ &\qquad\quad
+    M^z_{\mu\nu}
+    \left.
+    \left( 
+        \left[ \frac{\partial g}{\partial \eta_{++}} - \frac{\partial g}{\partial \eta_{--}} \right] \nabla_j n +
+        \left[ \frac{\partial g}{\partial \eta_{++}} - \frac{\partial g}{\partial \eta_{+-}} + \frac{\partial g}{\partial \eta_{--}} \right] \nabla_j m_z
+    \right) 
+  \right\rbrace
+  \left( (\nabla^{(2)}_{ij}\chi_\mu)\chi_\nu + (\nabla_i \chi_\mu)(\nabla_j \chi_\nu)\right) 
+\end{align}
+
+
+
+
+
+
+
+\begin{align}
+\rho(r_A) = \sum_{BC} \sum_{\mu\in B, \nu \in C}
+  P_{\mu\nu} \chi_\mu( R_B, r_A ) \chi_\nu (R_C, r_A)
+\end{align}
+\begin{align}
+\frac{\partial \rho(r_A)}{\partial R_C} &= \sum_{BC} \sum_{\mu\in B, \nu \in C}
+  P_{\mu\nu} \frac{\partial}{\partial R_D}(\chi_\mu( R_B, r_A ) \chi_\nu (R_C, r_A)) \\
+&= 
+\sum_{BC} \sum_{\mu\in B, \nu \in C}
+  P_{\mu\nu} \frac{\partial \chi_\mu( R_B, r_A )}{\partial R_D} \chi_\nu (R_C, r_A) + 
+\sum_{BC} \sum_{\mu\in B, \nu \in C}
+  P_{\mu\nu} \chi_\mu (R_B, r_A) \frac{\partial \chi_\nu( R_C, r_A )}{\partial R_D} \\ 
+&= 
+\sum_{BC} \sum_{\mu\in B, \nu \in C}
+  P_{\mu\nu} \frac{\partial \chi_\mu( R_B, r_A )}{\partial R_D} \chi_\nu (R_C, r_A) + 
+\sum_{BC} \sum_{\mu\in C, \nu \in B}
+  P_{\mu\nu} \chi_\nu (R_B, r_A) \frac{\partial \chi_\mu( R_B, r_A )}{\partial R_D} \\ 
+\end{align}
+
+
+
+\end{document}
